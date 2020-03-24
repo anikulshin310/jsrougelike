@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div class="modalWrapper" id = "modalWrapper">
+        <div class="modal">
+            <input type="radio" name="pixelSize" value="32" checked>32
+            <input type="radio" name="pixelSize" value="66">66
+
+            <input type="button" id="add1" value="" onclick="startGame()">
+        </div>
+    </div>
+
+    <div id="coords1"></div>
+
+    <div id="wrapper" class="wrapper">
+        <canvas id="field" width="660" height="660"></canvas>
+
+
+    </div>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
