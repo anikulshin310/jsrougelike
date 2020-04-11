@@ -149,13 +149,22 @@ function createMobs() {
             totalHP: totalHP,
             status: "alive",
             movement(x, y) {
-                if (x > 9 || x < 0 || y > 9 || y < 0 || checkAvailable(walls, x, y) === true) {
+                if (x > 9 || x < 0 || y > 9 || y < 0 || checkAvailable(walls, x, y) === true || check(x, y) === true) {
                     return;
 
                 }
-                if (x === playerObj.pos[0], y === playerObj.pos[1] || check(x, y) === true) {
+
+                if (x === playerObj.pos[0] && y === playerObj.pos[1] ||
+                    this.pos[0] == playerObj.pos[0] + 1 && this.pos[1] == playerObj.pos[1] ||
+                    this.pos[0] == playerObj.pos[0] - 1 && this.pos[1] == playerObj.pos[1] ||
+                    this.pos[0] == playerObj.pos[0] && this.pos[1] == playerObj.pos[1] + 1 ||
+                    this.pos[0] == playerObj.pos[0] && this.pos[1] == playerObj.pos[1] - 1
+                ) {
+                    playerObj.currentHP = playerObj.currentHP - 1;
+                    console.log(playerObj.currentHP)
                     return;
-                    console.log('2')
+
+
                 }
 
                 let thisMob = document.getElementById(this.name);
