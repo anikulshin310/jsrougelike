@@ -469,7 +469,7 @@ document.getElementById('wrapper').onclick = function (e) {
         playerObj.pos[0] = playerObj.pos[0] + 1;
 
         char.style.marginLeft = left + 66 + "px";
-        console.log(mobId)
+        playerPositionSave()
         attack(mobId);
 
     }
@@ -478,6 +478,7 @@ document.getElementById('wrapper').onclick = function (e) {
         playerObj.pos[0] = playerObj.pos[0] - 1;
 
         char.style.marginLeft = left - 66 + "px";
+        playerPositionSave()
         attack(mobId);
 
     }
@@ -486,6 +487,7 @@ document.getElementById('wrapper').onclick = function (e) {
         playerObj.pos[1] = playerObj.pos[1] + 1;
 
         char.style.marginTop = top + 66 + "px";
+        playerPositionSave()
         attack(mobId);
 
     }
@@ -494,6 +496,7 @@ document.getElementById('wrapper').onclick = function (e) {
         playerObj.pos[1] = playerObj.pos[1] - 1;
 
         char.style.marginTop = top - 66 + "px";
+        playerPositionSave()
         attack(mobId);
 
     }
