@@ -100,7 +100,7 @@ function cell() {
 };
 function createWalls() {
     walls = []
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 20; i++) {
         checkCells()
         let wall = document.createElement('div');
         wall.id = 'wall';
@@ -131,11 +131,11 @@ function checkCells() {
 }
 
 function createMobs() {
-    let playerObjIndex = freeCells.indexOf(playerObj.pos);
+    // let playerObjIndex = freeCells.indexOf(playerObj.pos);
 
     occupiedCells.push(freeCells.splice(0, 1));
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
         checkCells()
         let currentHP = randomInteger(4, 9) + 10;
         let totalHP = currentHP;
@@ -149,9 +149,19 @@ function createMobs() {
             totalHP: totalHP,
             status: "alive",
             movement(x, y) {
+                if (x > 9 || x < 0 || y > 9 || y < 0 || checkAvailable(walls, x, y) === true) {
+                    return;
+
+                }
+                if (x === playerObj.pos[0], y === playerObj.pos[1] || check(x, y) === true) {
+                    return;
+                    console.log('2')
+                }
+
                 let thisMob = document.getElementById(this.name);
 
                 this.pos = [x, y];
+
                 let thisMobPos = occupiedCells.indexOf(this.pos);
                 occupiedCells[thisMobPos] = [x, y];
                 thisMob.style.marginLeft = this.pos[0] * 66 + "px";
@@ -159,7 +169,7 @@ function createMobs() {
                 this.name = "mob" + this.pos[0] + this.pos[1];
                 thisMob.id = this.name;
             },
-            
+
         };
         // changePostion();
         mobs.push(mob);
@@ -169,7 +179,7 @@ function createMobs() {
         n.style.position = 'absolute';
         n.style.width = 66 + "px";
         n.style.height = 66 + "px";
-        
+
         n.style.display = 'flex';
         n.style.zIndex = 99;
         n.style.marginLeft = mob.pos[0] * 66 + "px";
@@ -177,7 +187,7 @@ function createMobs() {
         wrapper.appendChild(n);
         n.innerHTML = mob.totalHP + "/" + mob.currentHP;
 
-        draw_c( n.id)
+        draw_c(n.id)
 
 
     }
@@ -186,16 +196,59 @@ function createMobs() {
 
 }
 function draw_c(id) {
-    
+
     let с_canvas = document.getElementById(id);
     let с_context = с_canvas.getContext("2d");
-    
-    с_context.drawImage(img, 224, 288, 32, 32, 0, 0, 66 * 4, 66 * 2);
-    
 
-    
+    с_context.drawImage(img, 224, 288, 32, 32, 0, 0, 66 * 4, 66 * 2);
+
+
+
 
 }
+//ходим мобами случайно
+function allMobsMovement() {
+    function randomDirection() {
+        let direction = randomInteger(1, 2, 3);  //+ или минус 0
+        switch (direction) {
+            case 1: pos = 1;
+
+
+                break;
+            case 2: pos = -1;
+
+                break;
+            case 3: pos = 0;
+                break;
+
+
+        }
+        return pos
+
+    }
+    let directionXorY = randomInteger(1, 2, 3);
+    switch (directionXorY) {
+        case 1:
+            mobs.forEach(element => element.movement(element.pos[0] + randomDirection(), element.pos[1]))
+
+            break;
+
+        case 2:
+            mobs.forEach(element => element.movement(element.pos[0], element.pos[1] + randomDirection()))
+
+            break;
+        case 3:
+            break;
+    }
+
+
+
+
+
+}
+
+
+
 
 //слуйчайное число от 0 до 9 для размещения объектов рандомно
 function randomInteger(min, max) {
@@ -240,9 +293,8 @@ function playerPositionSave() {
     let cs = window.getComputedStyle(player);
     playerObj.pos[0] = parseInt(cs.marginLeft) / 66;
     playerObj.pos[1] = parseInt(cs.marginTop) / 66;
-    let showPositon = document.getElementById("coords1");
-    player.innerHTML = playerObj.currentHP + "/" + playerObj.totalHP;
-    showPositon.innerHTML = "X:" + playerObj.pos[0] + "Y:" + playerObj.pos[1];
+    allMobsMovement();
+
 
 }
 coords = [];
@@ -273,14 +325,13 @@ function attack(mobId) {
         thisMobObj.status = 'died';
         mobDiv.style.display = 'none';
     }
-    
+
 }
 
 
 function getMob(name) {
     return mobName => mobName.name === name;
 }
-
 
 
 //ходим бродим, если есть моб- атакуем
@@ -404,7 +455,7 @@ document.getElementById('wrapper').onclick = function (e) {
 
     }
 
-    if (xCoords > playerObj.pos[0] && xCoords < playerObj.pos[0] + 2 && xCoords !== 0) {
+    if (xCoords > playerObj.pos[0] && xCoords < playerObj.pos[0] + 2 && yCoords == playerObj.pos[1]) {
 
         playerObj.pos[0] = playerObj.pos[0] + 1;
 
@@ -413,7 +464,7 @@ document.getElementById('wrapper').onclick = function (e) {
         attack(mobId);
 
     }
-    if (xCoords < playerObj.pos[0] && xCoords > playerObj.pos[0] - 2 && xCoords !== 0) {
+    if (xCoords < playerObj.pos[0] && xCoords > playerObj.pos[0] - 2 && yCoords == playerObj.pos[1]) {
 
         playerObj.pos[0] = playerObj.pos[0] - 1;
 
@@ -421,7 +472,7 @@ document.getElementById('wrapper').onclick = function (e) {
         attack(mobId);
 
     }
-    if (yCoords > playerObj.pos[1] && yCoords < playerObj.pos[1] + 2 && yCoords !== 0) {
+    if (yCoords > playerObj.pos[1] && yCoords < playerObj.pos[1] + 2 && xCoords == playerObj.pos[0]) {
 
         playerObj.pos[1] = playerObj.pos[1] + 1;
 
@@ -429,7 +480,7 @@ document.getElementById('wrapper').onclick = function (e) {
         attack(mobId);
 
     }
-    if (yCoords < playerObj.pos[1] && yCoords > playerObj.pos[1] - 2 && yCoords !== 0) {
+    if (yCoords < playerObj.pos[1] && yCoords > playerObj.pos[1] - 2 && xCoords == playerObj.pos[0]) {
 
         playerObj.pos[1] = playerObj.pos[1] - 1;
 
@@ -438,11 +489,7 @@ document.getElementById('wrapper').onclick = function (e) {
 
     }
     playerPositionSave()
-    console.log(xCoords + 'x' + yCoords)
+
 };
 
 
-//контекстное меню
-document.addEventListener("contextmenu", function (e) {
-    console.log(e);
-});
