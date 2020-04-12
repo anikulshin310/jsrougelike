@@ -1,6 +1,68 @@
-#modalWrapper {
-     position: fixed;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: rgb(14, 8, 8);
+}
+
+.flex {
+    display: none;
+    justify-content: space-between;
+    height: 660px;
+}
+
+.item {
+    height: 100%;
+    width: calc((100%) / 3);
+    margin: 0 0 20px;
+}
+.itemLeftSide {
+    width: 20%;
+}
+.charInfo {
+    display: flex;
+    justify-content: space-around;
     
+    height: 100%;
+    width: 100%;
+}
+
+.healthBar {
+    width: 300px;
+    background-color:black;
+    border-radius: 4px;
+    border-style: solid 2px black;
+
+}
+
+#result {
+    margin-top: 50px;
+    transition: width 0.3s ease-in-out;
+    border-radius: 4px;
+    border-style: solid 2px black;
+}
+
+.rules {
+    background-color: gray;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    justify-content: right;
+    
+    
+    
+    
+}
+.rules p {
+    display: inline-block;
+    font-size: 25px;
+    
+}
+
+#modalWrapper {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -10,10 +72,10 @@
 }
 
 .modal {
-    
+
     width: 100vw;
     height: 100vh;
-    
+
 }
 
 #field {

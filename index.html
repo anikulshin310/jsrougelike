@@ -5,25 +5,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+
     <link rel="stylesheet" href="style.css">
+
+
 
 </head>
 
 <body>
-    <div class="modalWrapper" id = "modalWrapper">
+    <div class="modalWrapper" id="modalWrapper">
         <div class="modal">
-            
+
             <input type="button" id="add1" value="Start Game" onclick="startGame()">
         </div>
     </div>
 
-    <div id="coords1"></div>
 
-    <div id="wrapper" class="wrapper">
-        <canvas id="field" width="660" height="660"></canvas>
+
+
+    <div class="flex">
+        <div class="itemLeftSide">
+            <div class="charInfo">
+                <div class="charStatus">
+                    <div class="healthBar">
+                        <div id="result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div id="wrapper">
+
+                <canvas id="field" width="660" height="660"></canvas>
+
+
+            </div>
+        </div>
+        <div class="item">
+            <div class="charInfo">
+                <div class="rules">
+                    <p>Монстры и стены расставляются в случайной порядке
+                        <br> Перемещение стрелками клавиатуры, либо мышью
+                        <br>Наносим урон двигаясь в сторону монстра, либо кликая по нему мышью, если он в радиусе одной
+                        клетки от игрока</p>
+
+                </div>
+            </div>
+        </div>
+
 
 
     </div>
+
+    </div>
+
+
     <script src="script.js"></script>
 
 </body>

@@ -2,6 +2,7 @@
 
 function startGame() {
 
+document.querySelector('.flex').style.display= "flex"
 
     let modalWrapper = document.getElementById("modalWrapper");
     modalWrapper.style.display = "none";
@@ -12,17 +13,38 @@ function startGame() {
     createWalls()
     createMobs();
     showLayer();
+    playerPositionSave()
 }
 
-//логика хода 
-let playerTurn = true;
-function turn() {
-    if (playerTurn = true) {
-        playerTurn = false;
+
+//отрисовывем хп
+function healthBarChange() {
+    healthBarPercent = playerObj.currentHP / playerObj.totalHP * 100;
+    document.querySelector('#result').style.width = healthBarPercent + '%';
+    document.querySelector("#result").innerHTML = playerObj.currentHP + '/' + playerObj.totalHP;
+    function healthBarColorChange() {
+        if (healthBarPercent == 100) {
+            healthBarColor = 'green';
+        }
+        if (healthBarPercent >= 60 && healthBarPercent < 100) {
+            healthBarColor = 'yellow';
+
+        }
+        if (healthBarPercent < 30 && healthBarPercent > 0) {
+            healthBarColor = 'red';
+
+        }
+        return healthBarColor;
+
     }
-    else { playerTurn = true }
+
+
+    document.querySelector('#result').style.backgroundColor = healthBarColorChange();
+
+
 }
-//реализации случайного движения
+
+
 
 
 //canvas
@@ -158,11 +180,15 @@ function createMobs() {
                     this.pos[0] == playerObj.pos[0] + 1 && this.pos[1] == playerObj.pos[1] ||
                     this.pos[0] == playerObj.pos[0] - 1 && this.pos[1] == playerObj.pos[1] ||
                     this.pos[0] == playerObj.pos[0] && this.pos[1] == playerObj.pos[1] + 1 ||
-                    this.pos[0] == playerObj.pos[0] && this.pos[1] == playerObj.pos[1] - 1
+                    this.pos[0] == playerObj.pos[0] && this.pos[1] == playerObj.pos[1] - 1 
+                    
                 ) {
-                    playerObj.currentHP = playerObj.currentHP - 1;
-                    console.log(playerObj.currentHP)
-                    return;
+                    if (this.status === "alive") {
+                        playerObj.currentHP = playerObj.currentHP - 1;
+                        console.log(playerObj.currentHP)
+                        return;
+                    }
+
 
 
                 }
@@ -302,6 +328,7 @@ function playerPositionSave() {
     let cs = window.getComputedStyle(player);
     playerObj.pos[0] = parseInt(cs.marginLeft) / 66;
     playerObj.pos[1] = parseInt(cs.marginTop) / 66;
+    healthBarChange()
     allMobsMovement();
 
 
