@@ -482,6 +482,7 @@ document.getElementById('wrapper').onclick = function (e) {
     }
     
     healthBarChange()
+    allMobsMovement()
 };
 
 
