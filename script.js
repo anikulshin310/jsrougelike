@@ -1,19 +1,21 @@
 // let pixelSize = document.querySelector('input[name="pixelSize"]:checked').value;
-
+let pixelSizeVw = 'vw';
+let visibleView = 4;
+let pixelSize = ((screen.width / 100) * visibleView)
 function startGame() {
-
-document.querySelector('.flex').style.display= "flex"
-
     let modalWrapper = document.getElementById("modalWrapper");
     modalWrapper.style.display = "none";
     let field = document.getElementById("field");
     field.style.display = "flex";
-
-    drawCells();
-    createWalls()
+    field.style.width = (visibleView*10)+pixelSizeVw;
+    field.style.height = (visibleView*10)+pixelSizeVw;
+    healthBarChange();
+    createWalls();
     createMobs();
     showLayer();
-    playerPositionSave()
+    let rules = document.getElementById("rules");
+    rules.style.display = 'flex';
+
 }
 
 
@@ -41,49 +43,14 @@ function healthBarChange() {
 
     document.querySelector('#result').style.backgroundColor = healthBarColorChange();
 
-
 }
 
 
-
-
-//canvas
-var canvas = document.getElementById('field');
-var ctx = canvas.getContext('2d');
 var img = new Image();
 img.src = "backgroundTiles.png";
-img.onload = function () {
-    for (let i = 0; i < 10; i++) {
 
-        let startPointX = 66 * i;
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 0, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 66, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 132, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 198, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 264, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 330, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 396, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 462, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 528, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 594, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 660, 66, 66);
-        ctx.drawImage(img, 384, 64, 32, 32, startPointX, 726, 66, 66);
-    }
-};
 
-//рисуем клетки
-const drawCells = () => {
-    for (let x = 0; x < 720; x += 66) {
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, 660);
-    }
-    for (let y = 0; y < 720; y += 66) {
-        ctx.moveTo(0, y);
-        ctx.lineTo(660, y);
-    }
-    ctx.strokeStyle = "#888";
-    ctx.stroke();
-}
+
 
 //функция отрисовки моба
 
@@ -91,13 +58,13 @@ function showMob(n) {
     n = document.createElement('div');
     n.id = "mob" + n.pos[0] + n.pos[1];
     n.style.position = 'absolute';
-    n.style.width = 66 + "px";
-    n.style.height = 66 + "px";
+    n.style.width = pixelSize + pixelSizeVw;
+    n.style.height = pixelSize + pixelSizeVw;
     n.style.background = 'red';
     n.style.display = 'block';
     n.style.zIndex = 99;
-    n.style.marginLeft = n.pos[0] * 66 + "px";
-    n.style.marginTop = n.pos[1] * 66 + "px";
+    n.style.marginLeft = (n.pos[0] * visibleView) + pixelSizeVw;
+    n.style.marginTop = (n.pos[1] * visibleView) + pixelSizeVw;
     wrapper.appendChild(n);
 };
 
@@ -127,15 +94,15 @@ function createWalls() {
         let wall = document.createElement('div');
         wall.id = 'wall';
         wall.style.position = 'absolute';
-        wall.style.width = 66 + "px";
-        wall.style.height = 66 + "px";
+        wall.style.width = (visibleView) + pixelSizeVw;
+        wall.style.height = (visibleView) + pixelSizeVw;
         wall.style.background = 'grey';
         wall.style.display = 'flex';
 
 
         wall.style.zIndex = 99;
-        wall.style.marginLeft = posX * 66 + "px";
-        wall.style.marginTop = posY * 66 + "px";
+        wall.style.marginLeft = posX * (visibleView) + pixelSizeVw;
+        wall.style.marginTop = posY * (visibleView) + pixelSizeVw;
         wrapper.appendChild(wall);
         walls.push([posX, posY]);
     }
@@ -180,8 +147,8 @@ function createMobs() {
                     this.pos[0] == playerObj.pos[0] + 1 && this.pos[1] == playerObj.pos[1] ||
                     this.pos[0] == playerObj.pos[0] - 1 && this.pos[1] == playerObj.pos[1] ||
                     this.pos[0] == playerObj.pos[0] && this.pos[1] == playerObj.pos[1] + 1 ||
-                    this.pos[0] == playerObj.pos[0] && this.pos[1] == playerObj.pos[1] - 1 
-                    
+                    this.pos[0] == playerObj.pos[0] && this.pos[1] == playerObj.pos[1] - 1
+
                 ) {
                     if (this.status === "alive") {
                         playerObj.currentHP = playerObj.currentHP - 1;
@@ -199,8 +166,8 @@ function createMobs() {
 
                 let thisMobPos = occupiedCells.indexOf(this.pos);
                 occupiedCells[thisMobPos] = [x, y];
-                thisMob.style.marginLeft = this.pos[0] * 66 + "px";
-                thisMob.style.marginTop = this.pos[1] * 66 + "px";
+                thisMob.style.marginLeft = (this.pos[0] * visibleView) + pixelSizeVw;
+                thisMob.style.marginTop = (this.pos[1] * visibleView) + pixelSizeVw;
                 this.name = "mob" + this.pos[0] + this.pos[1];
                 thisMob.id = this.name;
             },
@@ -212,33 +179,24 @@ function createMobs() {
         n = document.createElement('canvas');
         n.id = mob.name;
         n.style.position = 'absolute';
-        n.style.width = 66 + "px";
-        n.style.height = 66 + "px";
+        n.style.width = (visibleView) + pixelSizeVw;
+        n.style.height = (visibleView) + pixelSizeVw;
 
         n.style.display = 'flex';
         n.style.zIndex = 99;
-        n.style.marginLeft = mob.pos[0] * 66 + "px";
-        n.style.marginTop = mob.pos[1] * 66 + "px";
+        n.style.marginLeft = (mob.pos[0] * visibleView) + pixelSizeVw;
+        n.style.marginTop = (mob.pos[1] * visibleView) + pixelSizeVw;
         wrapper.appendChild(n);
-        n.innerHTML = mob.totalHP + "/" + mob.currentHP;
+        
 
         draw_c(n.id)
-
-
     }
-
-
-
 }
 function draw_c(id) {
 
     let с_canvas = document.getElementById(id);
     let с_context = с_canvas.getContext("2d");
-
-    с_context.drawImage(img, 224, 288, 32, 32, 0, 0, 66 * 4, 66 * 2);
-
-
-
+    с_context.drawImage(img, 224, 289, 32, 32, 0, 0, (pixelSize * 6), (pixelSize * 3));
 
 }
 //ходим мобами случайно
@@ -299,40 +257,30 @@ let playerObj = {
     attack: 5,
 };
 
+
 function showLayer() {
 
     myLayer = document.createElement('canvas');
     myLayer.id = 'char';
     myLayer.style.position = 'absolute';
-    myLayer.style.width = 66 + "px";
-    myLayer.style.height = 66 + "px";
+    myLayer.style.width = (visibleView) + pixelSizeVw;
+    myLayer.style.height = (visibleView) + pixelSizeVw;
     myLayer.style.display = 'block';
     myLayer.style.zIndex = 99;
     wrapper.appendChild(myLayer);
+
 
     //отрисовывыем тайл игрока
     function draw_b() {
         var b_canvas = document.getElementById("char");
         var b_context = b_canvas.getContext("2d");
-        b_canvas.innerHTML = playerObj.currentHP + '/' + playerObj.totalHP;
+        
         b_context.drawImage(img, 31, 0, 32, 32, 0, 0, 66 * 4, 66 * 2);
     }
     draw_b()
 }
 
-//двигаем игрока
-//записываем координаты в объект игрока и див с координатами
 
-function playerPositionSave() {
-    let player = document.getElementById("char");
-    let cs = window.getComputedStyle(player);
-    playerObj.pos[0] = parseInt(cs.marginLeft) / 66;
-    playerObj.pos[1] = parseInt(cs.marginTop) / 66;
-    healthBarChange()
-    allMobsMovement();
-
-
-}
 coords = [];
 
 function checkAvailable(array, x, y) {
@@ -356,7 +304,7 @@ function attack(mobId) {
     let thisMobObj = mobs.find(getMob(mobId));
     let mobDiv = document.getElementById(mobId);
     thisMobObj.currentHP = thisMobObj.currentHP - playerObj.attack;
-    mobDiv.innerHTML = thisMobObj.currentHP + "/" + thisMobObj.totalHP;
+    
     if (thisMobObj.currentHP <= 0) {
         thisMobObj.status = 'died';
         mobDiv.style.display = 'none';
@@ -372,10 +320,11 @@ function getMob(name) {
 
 //ходим бродим, если есть моб- атакуем
 function checkingMobs(e) {
+
     let player = document.getElementById("char");
     let cs = window.getComputedStyle(player);
-    let left = parseInt(cs.marginLeft);
-    let top = parseInt(cs.marginTop);
+    let left = Math.ceil(playerObj.pos[0] * pixelSize);
+    let top = Math.ceil(playerObj.pos[1] * pixelSize);
     let checkMobLeft = check(playerObj.pos[0] - 1, playerObj.pos[1]) || checkAvailable(walls, playerObj.pos[0] - 1, playerObj.pos[1]);
     let checkMobRight = check(playerObj.pos[0] + 1, playerObj.pos[1]) || checkAvailable(walls, playerObj.pos[0] + 1, playerObj.pos[1]);
     let checkMobUp = check(playerObj.pos[0], playerObj.pos[1] - 1) || checkAvailable(walls, playerObj.pos[0], playerObj.pos[1] - 1);
@@ -384,8 +333,8 @@ function checkingMobs(e) {
 
         case 37: // если нажата клавиша влево
             if (left > 0 && checkMobLeft == false) {
-
-                char.style.marginLeft = left - 66 + "px";
+                playerObj.pos[0] = playerObj.pos[0] - 1;
+                char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
 
             }
             else if (checkMobLeft == true) {
@@ -398,8 +347,10 @@ function checkingMobs(e) {
             break;
 
         case 38: // если нажата клавиша вверх
-            if (top > 0 && checkMobUp == false)
-                char.style.marginTop = top - 66 + "px";
+            if (top > 0 && checkMobUp == false) {
+                playerObj.pos[1] = playerObj.pos[1] - 1;
+                char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
+            }
             else if (checkMobUp == true) {
                 let mobId = String("mob" + Number(playerObj.pos[0]) + Number(playerObj.pos[1] - 1));
 
@@ -408,16 +359,20 @@ function checkingMobs(e) {
 
             break;
         case 39: // если нажата клавиша вправо
-            if (left < 594 && checkMobRight == false)
-                char.style.marginLeft = left + 66 + "px";
+            if (left < (pixelSize * 9) && checkMobRight == false) {
+                playerObj.pos[0] = playerObj.pos[0] + 1;
+                char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
+            }
             else if (checkMobRight == true) {
                 let mobId = String("mob" + Number(playerObj.pos[0] + 1) + Number(playerObj.pos[1]));
                 attack(mobId);
             }
             break;
         case 40: // если нажата клавиша вниз
-            if (top < 594 && checkMobDown == false)
-                char.style.marginTop = top + 66 + "px";
+            if (top < (pixelSize * 9) && checkMobDown == false) {
+                playerObj.pos[1] = playerObj.pos[1] + 1;
+                char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
+            }
             else if (checkMobDown == true) {
                 let mobId = String("mob" + Number(playerObj.pos[0]) + Number(playerObj.pos[1] + 1));
 
@@ -425,8 +380,8 @@ function checkingMobs(e) {
             }
             break;
     }
-    playerPositionSave();
-
+    allMobsMovement()
+    healthBarChange()
 
 
 }
@@ -438,12 +393,10 @@ addEventListener("keydown", checkingMobs);
 document.getElementById('wrapper').onclick = function (e) {
     let x = e.offsetX == undefined ? e.layerX : e.offsetX;
     let y = e.offsetY == undefined ? e.layerY : e.offsetY;
-    let xCoords = Math.ceil(x / 66 - 1);
-    let yCoords = Math.ceil(y / 66 - 1);
-    let player = document.getElementById("char");
-    let cs = window.getComputedStyle(player);
-    let left = parseInt(cs.marginLeft);
-    let top = parseInt(cs.marginTop);
+    let xCoords = Math.ceil(x / pixelSize - 1);
+    let yCoords = Math.ceil(y / pixelSize - 1);
+    console.log(xCoords + "/"+yCoords)
+
 
     window.onclick = function (e) {
 
@@ -495,8 +448,8 @@ document.getElementById('wrapper').onclick = function (e) {
 
         playerObj.pos[0] = playerObj.pos[0] + 1;
 
-        char.style.marginLeft = left + 66 + "px";
-        playerPositionSave()
+        char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
+        
         attack(mobId);
 
     }
@@ -504,8 +457,8 @@ document.getElementById('wrapper').onclick = function (e) {
 
         playerObj.pos[0] = playerObj.pos[0] - 1;
 
-        char.style.marginLeft = left - 66 + "px";
-        playerPositionSave()
+        char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
+        
         attack(mobId);
 
     }
@@ -513,8 +466,8 @@ document.getElementById('wrapper').onclick = function (e) {
 
         playerObj.pos[1] = playerObj.pos[1] + 1;
 
-        char.style.marginTop = top + 66 + "px";
-        playerPositionSave()
+        char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
+        
         attack(mobId);
 
     }
@@ -522,13 +475,13 @@ document.getElementById('wrapper').onclick = function (e) {
 
         playerObj.pos[1] = playerObj.pos[1] - 1;
 
-        char.style.marginTop = top - 66 + "px";
-        playerPositionSave()
+        char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
+        
         attack(mobId);
 
     }
-    playerPositionSave()
-
+    
+    healthBarChange()
 };
 
 
