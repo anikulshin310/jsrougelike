@@ -196,7 +196,7 @@ function draw_c(id) {
 
     let с_canvas = document.getElementById(id);
     let с_context = с_canvas.getContext("2d");
-    с_context.drawImage(img, 224, 289, 32, 32, 0, 0, (pixelSize * 6), (pixelSize * 3));
+    с_context.drawImage(img, 224, 289, 32, 32, 0, 0, 66 * 4, 66* 2);
 
 }
 //ходим мобами случайно
