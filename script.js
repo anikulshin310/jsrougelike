@@ -67,13 +67,15 @@ function healthBarChange() {
 
 var img = new Image();
 img.src = "img/backgroundTiles.png";
+var trees = new Image();
+trees.src = "img/trees.png";
 
 
 //рисуем бэкграунд
 
 function drawBackground() {
     let field = document.getElementById('field');
-    field.style.backgroundSize = 130 + 'px';
+    field.style.backgroundSize = 40 + 'px';
 }
 
 
@@ -131,10 +133,29 @@ function createWalls() {
         wrapper.appendChild(wall);
         walls.push([posX, posY]);
         function draw_c(id) {
+            let tree = randomInteger(1, 4);
+            if (tree == 1) {
+                treeX = 128;
+                treeY = 160;
+
+            }
+            if (tree == 2) {
+                treeX = 256;
+                treeY = 160;
+
+            }
+            if (tree == 3) {
+                treeX = 0;
+                treeY = 160;
+            }
+            if (tree == 4) {
+                treeX = 384;
+                treeY = 160;
+            }
 
             let с_canvas = document.getElementById(id);
             let с_context = с_canvas.getContext("2d");
-            с_context.drawImage(img, 192, 255, 32, 32, 0, 0, 66 * 5, 66 * 3);
+            с_context.drawImage(trees, treeX, treeY, 150, 165, 0, 0, 66 * 5, 66 * 3);
 
         }
         draw_c(wall.id)
