@@ -30,16 +30,20 @@ body {
 
 #rules {
     display: none;
+    flex-direction: column;
     margin-top: 50px;
     width: 100%;
-    padding: 10px;
-    background-color: gray;
+    
+    
 
 }
 
-/* #rules p {
-    font-family: db;
-} */
+ #rules p {
+     display: inline-block;
+     padding-left: 10px;
+     padding-bottom:10px ;
+    background-color: gray;
+} 
 
 #modalWrapper {
     position: fixed;
