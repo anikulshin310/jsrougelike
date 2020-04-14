@@ -15,6 +15,7 @@ function startGame() {
     createWalls();
     createMobs();
     drawBackground();
+    drawCells();
 
     sessionStorage.setItem("player", JSON.stringify(playerObj));
 
@@ -24,9 +25,12 @@ function startGame() {
 }
 //новая игра
 function StartNewGame() {
+    $('#exampleModal').modal('hide')
     mobs = [];
     occupiedCells = [];
     freeCells = [];
+    walls = [];
+    coords = [];
     var element = document.getElementById("wrapper");
     while (element.firstChild) {
         element.removeChild(element.firstChild);
@@ -77,7 +81,26 @@ function drawBackground() {
     let field = document.getElementById('field');
     field.style.backgroundSize = 40 + 'px';
 }
+//рисуем клетки
+function drawCells() {
+    var c_canvas = document.getElementById("field");
+    var context = c_canvas.getContext("2d");
 
+
+    for (var x = 0; x < 400; x += c_canvas.width / 10) {
+        context.moveTo(x, 0);
+        context.lineTo(x, 400);
+    }
+
+    for (var y = 0; y < 400; y += c_canvas.height / 10) {
+        context.moveTo(0, y);
+        context.lineTo(400, y);
+    }
+
+    context.strokeStyle = "rgb(4, 97, 17)";
+    context.stroke();
+
+}
 
 //функция отрисовки моба
 
@@ -192,6 +215,7 @@ function createMobs() {
             totalHP: totalHP,
             status: "alive",
             movement(x, y) {
+                let thisMob = document.getElementById(this.name);
                 if (x > 9 || x < 0 || y > 9 || y < 0 || checkAvailable(walls, x, y) === true || check(x, y) === true) {
                     return;
 
@@ -208,12 +232,17 @@ function createMobs() {
                         playerObj.currentHP = playerObj.currentHP - 1;
                         return;
                     }
+                    if (this.status === "died") {
+                        thisMob.style.display = "none"
+                        return;
+                    }
+
 
 
 
                 }
 
-                let thisMob = document.getElementById(this.name);
+
                 this.pos = [x, y];
                 let thisMobPos = occupiedCells.indexOf(this.pos);
                 occupiedCells[thisMobPos] = [x, y];
@@ -224,7 +253,7 @@ function createMobs() {
             },
 
         };
-        // changePostion();
+
         mobs.push(mob);
 
         n = document.createElement('canvas');
@@ -301,6 +330,7 @@ function showLayer() {
         totalHP: 30,
         currentHP: 30,
         attack: 5,
+        killsCounter: 0,
 
     };
     myLayer = document.createElement('canvas');
@@ -349,9 +379,19 @@ function attack(mobId) {
 
     if (thisMobObj.currentHP <= 0) {
         thisMobObj.status = 'died';
+        playerObj.killsCounter = playerObj.killsCounter + 1;
+
+        if (playerObj.killsCounter == mobs.length) {
+            winning()
+        }
         mobDiv.style.display = 'none';
+
     }
 
+}
+
+function winning() {
+    $('#exampleModal').modal('show')
 }
 
 
