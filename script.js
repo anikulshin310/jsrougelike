@@ -135,7 +135,7 @@ function cell() {
         freeCells.push([0 + i, 8]);
         freeCells.push([0 + i, 9]);
     }
-
+occupiedCells.push(freeCells.splice(0, 1));
 };
 function createWalls() {
     walls = []
