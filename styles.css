@@ -64,7 +64,8 @@ body {
     position: absolute;
     z-index: 1;
     border: solid 1px gray;
-    background-color: rgb(54, 54, 54);
+    /* background-color: rgb(54, 54, 54); */
+    background-image: url(img/grassTile.jpg);
 
 }
 

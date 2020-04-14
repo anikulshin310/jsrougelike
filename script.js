@@ -7,17 +7,36 @@ function startGame() {
     modalWrapper.style.display = "none";
     let field = document.getElementById("field");
     field.style.display = "flex";
-    field.style.width = (visibleView*10)+pixelSizeVw;
-    field.style.height = (visibleView*10)+pixelSizeVw;
+    field.style.width = (visibleView * 10) + pixelSizeVw;
+    field.style.height = (visibleView * 10) + pixelSizeVw;
+    showLayer();
+    cell();
     healthBarChange();
     createWalls();
     createMobs();
-    showLayer();
+    drawBackground();
+
+    sessionStorage.setItem("player", JSON.stringify(playerObj));
+
     let rules = document.getElementById("rules");
     rules.style.display = 'flex';
 
 }
-
+//новая игра
+function StartNewGame() {
+    mobs = [];
+    occupiedCells = [];
+    freeCells = [];
+    var element = document.getElementById("wrapper");
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    };
+    let field = document.createElement('canvas');
+    field.id = "field";
+    wrapper.appendChild(field);
+    drawBackground();
+    startGame();
+}
 
 //отрисовывем хп
 function healthBarChange() {
@@ -47,9 +66,15 @@ function healthBarChange() {
 
 
 var img = new Image();
-img.src = "backgroundTiles.png";
+img.src = "img/backgroundTiles.png";
 
 
+//рисуем бэкграунд
+
+function drawBackground() {
+    let field = document.getElementById('field');
+    field.style.backgroundSize = 130 + 'px';
+}
 
 
 //функция отрисовки моба
@@ -71,7 +96,7 @@ function showMob(n) {
 let mobs = [];//массив объектов мобов
 let occupiedCells = [];
 let freeCells = [];
-cell();
+
 function cell() {
     for (let i = 0; i < 10; i++) {
         freeCells.push([0 + i, 0]);
@@ -89,23 +114,35 @@ function cell() {
 };
 function createWalls() {
     walls = []
+
+
     for (let i = 0; i < 20; i++) {
         checkCells()
-        let wall = document.createElement('div');
-        wall.id = 'wall';
+        let wall = document.createElement('canvas');
+        wall.id = 'wall' + posX + posY;
         wall.style.position = 'absolute';
         wall.style.width = (visibleView) + pixelSizeVw;
         wall.style.height = (visibleView) + pixelSizeVw;
-        wall.style.background = 'grey';
+
         wall.style.display = 'flex';
-
-
         wall.style.zIndex = 99;
         wall.style.marginLeft = posX * (visibleView) + pixelSizeVw;
         wall.style.marginTop = posY * (visibleView) + pixelSizeVw;
         wrapper.appendChild(wall);
         walls.push([posX, posY]);
+        function draw_c(id) {
+
+            let с_canvas = document.getElementById(id);
+            let с_context = с_canvas.getContext("2d");
+            с_context.drawImage(img, 192, 255, 32, 32, 0, 0, 66 * 5, 66 * 3);
+
+        }
+        draw_c(wall.id)
+
+
     }
+
+
 
 }
 
@@ -120,16 +157,12 @@ function checkCells() {
 }
 
 function createMobs() {
-    // let playerObjIndex = freeCells.indexOf(playerObj.pos);
-
     occupiedCells.push(freeCells.splice(0, 1));
-
     for (let i = 0; i < 5; i++) {
         checkCells()
         let currentHP = randomInteger(4, 9) + 10;
         let totalHP = currentHP;
         let name = 'mob' + posX + posY;
-
 
         mob = {
             name: name,
@@ -152,7 +185,6 @@ function createMobs() {
                 ) {
                     if (this.status === "alive") {
                         playerObj.currentHP = playerObj.currentHP - 1;
-                        console.log(playerObj.currentHP)
                         return;
                     }
 
@@ -161,9 +193,7 @@ function createMobs() {
                 }
 
                 let thisMob = document.getElementById(this.name);
-
                 this.pos = [x, y];
-
                 let thisMobPos = occupiedCells.indexOf(this.pos);
                 occupiedCells[thisMobPos] = [x, y];
                 thisMob.style.marginLeft = (this.pos[0] * visibleView) + pixelSizeVw;
@@ -187,7 +217,7 @@ function createMobs() {
         n.style.marginLeft = (mob.pos[0] * visibleView) + pixelSizeVw;
         n.style.marginTop = (mob.pos[1] * visibleView) + pixelSizeVw;
         wrapper.appendChild(n);
-        
+
 
         draw_c(n.id)
     }
@@ -196,7 +226,7 @@ function draw_c(id) {
 
     let с_canvas = document.getElementById(id);
     let с_context = с_canvas.getContext("2d");
-    с_context.drawImage(img, 224, 289, 32, 32, 0, 0, 66 * 4, 66* 2);
+    с_context.drawImage(img, 224, 289, 32, 32, 0, 0, 66 * 4, 66 * 2);
 
 }
 //ходим мобами случайно
@@ -233,14 +263,8 @@ function allMobsMovement() {
         case 3:
             break;
     }
-
-
-
-
-
+    sessionStorage.setItem("player", JSON.stringify(playerObj));
 }
-
-
 
 
 //слуйчайное число от 0 до 9 для размещения объектов рандомно
@@ -249,17 +273,15 @@ function randomInteger(min, max) {
     return Math.round(rand);
 }
 
-//рисуем блок игрока
-let playerObj = {
-    pos: [0, 0],
-    totalHP: 30,
-    currentHP: 30,
-    attack: 5,
-};
-
 
 function showLayer() {
+    playerObj = {
+        pos: [0, 0],
+        totalHP: 30,
+        currentHP: 30,
+        attack: 5,
 
+    };
     myLayer = document.createElement('canvas');
     myLayer.id = 'char';
     myLayer.style.position = 'absolute';
@@ -274,7 +296,6 @@ function showLayer() {
     function draw_b() {
         var b_canvas = document.getElementById("char");
         var b_context = b_canvas.getContext("2d");
-        
         b_context.drawImage(img, 31, 0, 32, 32, 0, 0, 66 * 4, 66 * 2);
     }
     draw_b()
@@ -304,7 +325,7 @@ function attack(mobId) {
     let thisMobObj = mobs.find(getMob(mobId));
     let mobDiv = document.getElementById(mobId);
     thisMobObj.currentHP = thisMobObj.currentHP - playerObj.attack;
-    
+
     if (thisMobObj.currentHP <= 0) {
         thisMobObj.status = 'died';
         mobDiv.style.display = 'none';
@@ -395,7 +416,7 @@ document.getElementById('wrapper').onclick = function (e) {
     let y = e.offsetY == undefined ? e.layerY : e.offsetY;
     let xCoords = Math.ceil(x / pixelSize - 1);
     let yCoords = Math.ceil(y / pixelSize - 1);
-    console.log(xCoords + "/"+yCoords)
+
 
 
     window.onclick = function (e) {
@@ -413,6 +434,7 @@ document.getElementById('wrapper').onclick = function (e) {
             mobId = e ? e.target : window.event.srcElement;
             if (mobId.id === String("mob" + Number(playerObj.pos[0] - 1) + Number(playerObj.pos[1]))) {
                 attack(mobId.id);
+
             }
             if (mobId.id === String("mob" + Number(playerObj.pos[0] + 1) + Number(playerObj.pos[1]))) {
                 attack(mobId.id);
@@ -439,7 +461,7 @@ document.getElementById('wrapper').onclick = function (e) {
 
 
         }
-
+        allMobsMovement()
 
 
     }
@@ -449,7 +471,7 @@ document.getElementById('wrapper').onclick = function (e) {
         playerObj.pos[0] = playerObj.pos[0] + 1;
 
         char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
-        
+        allMobsMovement()
         attack(mobId);
 
     }
@@ -458,7 +480,7 @@ document.getElementById('wrapper').onclick = function (e) {
         playerObj.pos[0] = playerObj.pos[0] - 1;
 
         char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
-        
+        allMobsMovement()
         attack(mobId);
 
     }
@@ -467,22 +489,24 @@ document.getElementById('wrapper').onclick = function (e) {
         playerObj.pos[1] = playerObj.pos[1] + 1;
 
         char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
-        
+        allMobsMovement()
         attack(mobId);
 
     }
     if (yCoords < playerObj.pos[1] && yCoords > playerObj.pos[1] - 2 && xCoords == playerObj.pos[0]) {
 
         playerObj.pos[1] = playerObj.pos[1] - 1;
-
+        allMobsMovement()
         char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
-        
+
         attack(mobId);
 
     }
-    
+
     healthBarChange()
-    allMobsMovement()
+
 };
+
+
 
 
