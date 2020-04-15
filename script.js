@@ -9,8 +9,8 @@ function startGame() {
     field.style.display = "flex";
     field.style.width = (visibleView * 10) + pixelSizeVw;
     field.style.height = (visibleView * 10) + pixelSizeVw;
-    showLayer();
     cell();
+    showLayer();
     healthBarChange();
     createWalls();
     createMobs();
@@ -124,6 +124,7 @@ let freeCells = [];
 
 function cell() {
     for (let i = 0; i < 10; i++) {
+        
         freeCells.push([0 + i, 0]);
         freeCells.push([0 + i, 1]);
         freeCells.push([0 + i, 2]);
@@ -134,8 +135,14 @@ function cell() {
         freeCells.push([0 + i, 7]);
         freeCells.push([0 + i, 8]);
         freeCells.push([0 + i, 9]);
+        
     }
-occupiedCells.push(freeCells.splice(0, 1));
+    
+    occupiedCells.push(freeCells.splice(0, 1));
+    
+    
+    
+
 };
 function createWalls() {
     walls = []
@@ -325,6 +332,7 @@ function randomInteger(min, max) {
 
 
 function showLayer() {
+    
     playerObj = {
         pos: [0, 0],
         totalHP: 30,
@@ -333,6 +341,8 @@ function showLayer() {
         killsCounter: 0,
 
     };
+    
+    
     myLayer = document.createElement('canvas');
     myLayer.id = 'char';
     myLayer.style.position = 'absolute';
