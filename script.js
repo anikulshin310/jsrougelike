@@ -414,7 +414,7 @@ function getMob(name) {
 function checkingMobs(e) {
 
     let player = document.getElementById("char");
-    let cs = window.getComputedStyle(player);
+    
     let left = Math.ceil(playerObj.pos[0] * pixelSize);
     let top = Math.ceil(playerObj.pos[1] * pixelSize);
     let checkMobLeft = check(playerObj.pos[0] - 1, playerObj.pos[1]) || checkAvailable(walls, playerObj.pos[0] - 1, playerObj.pos[1]);
@@ -479,6 +479,24 @@ function checkingMobs(e) {
 }
 
 addEventListener("keydown", checkingMobs);
+
+
+//симуляция нажатия клавиш
+
+function simulateKey (keyCode, type, modifiers) {
+	var evtName = (typeof(type) === "string") ? "key" + type : "keydown";	
+	var modifier = (typeof(modifiers) === "object") ? modifier : {};
+
+	var event = document.createEvent("HTMLEvents");
+	event.initEvent(evtName, true, false);
+	event.keyCode = keyCode;
+	
+	for (var i in modifiers) {
+		event[i] = modifiers[i];
+	}
+
+	document.dispatchEvent(event);
+}
 
 
 //передвижения по клику мыши

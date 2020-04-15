@@ -27,6 +27,22 @@ body {
     border-radius: 4px;
     border-style: solid 2px black;
 }
+.controls {
+    margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    
+}
+#controlKey {
+    margin-top: 0;
+}
+.controlKeyUp {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
 
 #rules {
     display: none;

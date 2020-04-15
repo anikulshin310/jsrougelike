@@ -20,25 +20,26 @@
         <button type="button" class="btn btn-dark" id="add1" onclick="startGame()">Start Game</button>
 
     </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Вы победили!</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Вы победили!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы победили всех монстров. Хотите начать заново?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Нет</button>
+                    <button type="button" class="btn btn-dark" onclick="StartNewGame()">Да!</button>
+                </div>
             </div>
-            <div class="modal-body">
-              Вы победили всех монстров. Хотите начать заново?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-dark" data-dismiss="modal">Нет</button>
-              <button type="button" class="btn btn-dark" onclick="StartNewGame()">Да!</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
     <div class="container-fluid">
         <div class="row">
             <div class="col-3">
@@ -48,7 +49,25 @@
                         <div class="healthBar">
                             <div id="result">
                             </div>
+
                         </div>
+                        <div class="controlKeyUp"><button type="button" class="btn btn-dark" id='controlKey'
+                            onclick="simulateKey(38)">&#8593;
+                        </button></div>
+                        <div class="controls">
+                            
+                            <div><button type="button" class="btn btn-dark" id='controlKey'
+                                    onclick="simulateKey(37)">&#8592;
+                                </button>
+                                <button type="button" class="btn btn-dark" id='controlKey'
+                                    onclick="simulateKey(40)">&#8595;
+                                </button>
+                                <button type="button" class="btn btn-dark" id='controlKey'
+                                    onclick="simulateKey(39)">&#8594;
+                                </button></div>
+                        </div>
+
+
 
                     </div>
                 </div>
@@ -60,14 +79,14 @@
             <div class="col-4" id="rules">
                 <div>
                     <p>
-                    <br> Перемещение стрелками клавиатуры, либо мышью
-                    <br>Наносим урон двигаясь в сторону монстра, либо кликая по нему мышью, если он в радиусе одной
-                    клетки от игрока</p>
+                        <br> Перемещение стрелками клавиатуры, либо мышью
+                        <br>Наносим урон двигаясь в сторону монстра, либо кликая по нему мышью, если он в радиусе одной
+                        клетки от игрока</p>
 
                 </div>
                 <button type="button" class="btn btn-dark" id="add1" onclick="StartNewGame()">New Game</button>
             </div>
-            
+
         </div>
     </div>
 
