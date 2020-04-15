@@ -506,7 +506,7 @@ document.getElementById('wrapper').onclick = function (e) {
     let cellSize =document.querySelector('#field').offsetWidth/10;
     let xCoords = Math.ceil(x / cellSize - 1);
     let yCoords = Math.ceil(y / cellSize - 1);
-    console.log(cellSize)
+    
     
 
 
