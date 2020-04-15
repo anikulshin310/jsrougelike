@@ -485,8 +485,11 @@ addEventListener("keydown", checkingMobs);
 document.getElementById('wrapper').onclick = function (e) {
     let x = e.offsetX == undefined ? e.layerX : e.offsetX;
     let y = e.offsetY == undefined ? e.layerY : e.offsetY;
-    let xCoords = Math.ceil(x / pixelSize - 1);
-    let yCoords = Math.ceil(y / pixelSize - 1);
+    let cellSize =document.querySelector('#field').offsetWidth/10;
+    let xCoords = Math.ceil(x / cellSize - 1);
+    let yCoords = Math.ceil(y / cellSize - 1);
+    console.log(cellSize)
+    
 
 
 
@@ -543,7 +546,7 @@ document.getElementById('wrapper').onclick = function (e) {
 
         char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
         allMobsMovement()
-        attack(mobId);
+        // attack(mobId);
 
     }
     if (xCoords < playerObj.pos[0] && xCoords > playerObj.pos[0] - 2 && yCoords == playerObj.pos[1]) {
@@ -552,7 +555,7 @@ document.getElementById('wrapper').onclick = function (e) {
 
         char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
         allMobsMovement()
-        attack(mobId);
+        // attack(mobId);
 
     }
     if (yCoords > playerObj.pos[1] && yCoords < playerObj.pos[1] + 2 && xCoords == playerObj.pos[0]) {
@@ -561,7 +564,7 @@ document.getElementById('wrapper').onclick = function (e) {
 
         char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
         allMobsMovement()
-        attack(mobId);
+        // attack(mobId);
 
     }
     if (yCoords < playerObj.pos[1] && yCoords > playerObj.pos[1] - 2 && xCoords == playerObj.pos[0]) {
@@ -570,7 +573,7 @@ document.getElementById('wrapper').onclick = function (e) {
         allMobsMovement()
         char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
 
-        attack(mobId);
+        // attack(mobId);
 
     }
 
