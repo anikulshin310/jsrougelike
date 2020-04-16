@@ -402,8 +402,7 @@ function getMob(name) {
 //ходим бродим, если есть моб- атакуем
 function checkingMobs(e) {
 
-    let player = document.getElementById("char");
-
+    let char = document.getElementById("char");
     let left = Math.ceil(playerObj.pos[0] * pixelSize);
     let top = Math.ceil(playerObj.pos[1] * pixelSize);
     let checkMobLeft = check(playerObj.pos[0] - 1, playerObj.pos[1]) || checkAvailable(walls, playerObj.pos[0] - 1, playerObj.pos[1]);
@@ -524,10 +523,8 @@ document.getElementById('wrapper').onclick = function(e) {
                 simulateKey(38)
             }
 
-
-
         }
-        allMobsMovement()
+
 
 
     }
