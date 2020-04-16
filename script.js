@@ -2,6 +2,7 @@
 let pixelSizeVw = 'vw';
 let visibleView = 4;
 let pixelSize = ((screen.width / 100) * visibleView)
+
 function startGame() {
     let modalWrapper = document.getElementById("modalWrapper");
     modalWrapper.style.display = "none";
@@ -16,9 +17,7 @@ function startGame() {
     createMobs();
     drawBackground();
     drawCells();
-
     sessionStorage.setItem("player", JSON.stringify(playerObj));
-
     let rules = document.getElementById("rules");
     rules.style.display = 'flex';
 
@@ -47,25 +46,20 @@ function healthBarChange() {
     healthBarPercent = playerObj.currentHP / playerObj.totalHP * 100;
     document.querySelector('#result').style.width = healthBarPercent + '%';
     document.querySelector("#result").innerHTML = playerObj.currentHP + '/' + playerObj.totalHP;
+
     function healthBarColorChange() {
         if (healthBarPercent == 100) {
             healthBarColor = 'green';
         }
         if (healthBarPercent >= 60 && healthBarPercent < 100) {
             healthBarColor = 'yellow';
-
         }
         if (healthBarPercent < 30 && healthBarPercent > 0) {
             healthBarColor = 'red';
-
         }
         return healthBarColor;
-
     }
-
-
     document.querySelector('#result').style.backgroundColor = healthBarColorChange();
-
 }
 
 
@@ -83,16 +77,16 @@ function drawBackground() {
 }
 //рисуем клетки
 function drawCells() {
-    var c_canvas = document.getElementById("field");
-    var context = c_canvas.getContext("2d");
+    let c_canvas = document.getElementById("field");
+    let context = c_canvas.getContext("2d");
 
 
-    for (var x = 0; x < 400; x += c_canvas.width / 10) {
+    for (let x = 0; x < 400; x += c_canvas.width / 10) {
         context.moveTo(x, 0);
         context.lineTo(x, 400);
     }
 
-    for (var y = 0; y < 400; y += c_canvas.height / 10) {
+    for (let y = 0; y < 400; y += c_canvas.height / 10) {
         context.moveTo(0, y);
         context.lineTo(400, y);
     }
@@ -118,13 +112,13 @@ function showMob(n) {
     wrapper.appendChild(n);
 };
 
-let mobs = [];//массив объектов мобов
+let mobs = []; //массив объектов мобов
 let occupiedCells = [];
 let freeCells = [];
 
 function cell() {
     for (let i = 0; i < 10; i++) {
-        
+
         freeCells.push([0 + i, 0]);
         freeCells.push([0 + i, 1]);
         freeCells.push([0 + i, 2]);
@@ -135,15 +129,13 @@ function cell() {
         freeCells.push([0 + i, 7]);
         freeCells.push([0 + i, 8]);
         freeCells.push([0 + i, 9]);
-        
+
     }
-    
+
     occupiedCells.push(freeCells.splice(0, 1));
-    
-    
-    
 
 };
+
 function createWalls() {
     walls = []
 
@@ -162,6 +154,7 @@ function createWalls() {
         wall.style.marginTop = posY * (visibleView) + pixelSizeVw;
         wrapper.appendChild(wall);
         walls.push([posX, posY]);
+
         function draw_c(id) {
             let tree = randomInteger(1, 4);
             if (tree == 1) {
@@ -244,9 +237,6 @@ function createMobs() {
                         return;
                     }
 
-
-
-
                 }
 
 
@@ -279,6 +269,7 @@ function createMobs() {
         draw_c(n.id)
     }
 }
+
 function draw_c(id) {
 
     let с_canvas = document.getElementById(id);
@@ -289,19 +280,17 @@ function draw_c(id) {
 //ходим мобами случайно
 function allMobsMovement() {
     function randomDirection() {
-        let direction = randomInteger(1, 2, 3);  //+ или минус 0
+        let direction = randomInteger(1, 2, 3); //+ или минус 0
         switch (direction) {
-            case 1: pos = 1;
-
-
+            case 1:
+                pos = 1;
                 break;
-            case 2: pos = -1;
-
+            case 2:
+                pos = -1;
                 break;
-            case 3: pos = 0;
+            case 3:
+                pos = 0;
                 break;
-
-
         }
         return pos
 
@@ -332,7 +321,7 @@ function randomInteger(min, max) {
 
 
 function showLayer() {
-    
+
     playerObj = {
         pos: [0, 0],
         totalHP: 30,
@@ -341,8 +330,8 @@ function showLayer() {
         killsCounter: 0,
 
     };
-    
-    
+
+
     myLayer = document.createElement('canvas');
     myLayer.id = 'char';
     myLayer.style.position = 'absolute';
@@ -414,7 +403,7 @@ function getMob(name) {
 function checkingMobs(e) {
 
     let player = document.getElementById("char");
-    
+
     let left = Math.ceil(playerObj.pos[0] * pixelSize);
     let top = Math.ceil(playerObj.pos[1] * pixelSize);
     let checkMobLeft = check(playerObj.pos[0] - 1, playerObj.pos[1]) || checkAvailable(walls, playerObj.pos[0] - 1, playerObj.pos[1]);
@@ -428,8 +417,7 @@ function checkingMobs(e) {
                 playerObj.pos[0] = playerObj.pos[0] - 1;
                 char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
 
-            }
-            else if (checkMobLeft == true) {
+            } else if (checkMobLeft == true) {
                 let mobId = String("mob" + Number(playerObj.pos[0] - 1) + Number(playerObj.pos[1]));
 
                 attack(mobId);
@@ -442,8 +430,7 @@ function checkingMobs(e) {
             if (top > 0 && checkMobUp == false) {
                 playerObj.pos[1] = playerObj.pos[1] - 1;
                 char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
-            }
-            else if (checkMobUp == true) {
+            } else if (checkMobUp == true) {
                 let mobId = String("mob" + Number(playerObj.pos[0]) + Number(playerObj.pos[1] - 1));
 
                 attack(mobId);
@@ -454,8 +441,7 @@ function checkingMobs(e) {
             if (left < (pixelSize * 9) && checkMobRight == false) {
                 playerObj.pos[0] = playerObj.pos[0] + 1;
                 char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
-            }
-            else if (checkMobRight == true) {
+            } else if (checkMobRight == true) {
                 let mobId = String("mob" + Number(playerObj.pos[0] + 1) + Number(playerObj.pos[1]));
                 attack(mobId);
             }
@@ -464,8 +450,7 @@ function checkingMobs(e) {
             if (top < (pixelSize * 9) && checkMobDown == false) {
                 playerObj.pos[1] = playerObj.pos[1] + 1;
                 char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
-            }
-            else if (checkMobDown == true) {
+            } else if (checkMobDown == true) {
                 let mobId = String("mob" + Number(playerObj.pos[0]) + Number(playerObj.pos[1] + 1));
 
                 attack(mobId);
@@ -483,35 +468,35 @@ addEventListener("keydown", checkingMobs);
 
 //симуляция нажатия клавиш
 
-function simulateKey (keyCode, type, modifiers) {
-	var evtName = (typeof(type) === "string") ? "key" + type : "keydown";	
-	var modifier = (typeof(modifiers) === "object") ? modifier : {};
+function simulateKey(keyCode, type, modifiers) {
+    var evtName = (typeof(type) === "string") ? "key" + type : "keydown";
+    var modifier = (typeof(modifiers) === "object") ? modifier : {};
 
-	var event = document.createEvent("HTMLEvents");
-	event.initEvent(evtName, true, false);
-	event.keyCode = keyCode;
-	
-	for (var i in modifiers) {
-		event[i] = modifiers[i];
-	}
+    var event = document.createEvent("HTMLEvents");
+    event.initEvent(evtName, true, false);
+    event.keyCode = keyCode;
 
-	document.dispatchEvent(event);
+    for (var i in modifiers) {
+        event[i] = modifiers[i];
+    }
+
+    document.dispatchEvent(event);
 }
 
 
 //передвижения по клику мыши
-document.getElementById('wrapper').onclick = function (e) {
+document.getElementById('wrapper').onclick = function(e) {
     let x = e.offsetX == undefined ? e.layerX : e.offsetX;
     let y = e.offsetY == undefined ? e.layerY : e.offsetY;
-    let cellSize =document.querySelector('#field').offsetWidth/10;
+    let cellSize = document.querySelector('#field').offsetWidth / 10;
     let xCoords = Math.ceil(x / cellSize - 1);
     let yCoords = Math.ceil(y / cellSize - 1);
-    
-    
+    console.log(cellSize)
 
 
 
-    window.onclick = function (e) {
+
+    window.onclick = function(e) {
 
         let mobId = e ? e.target : window.event.srcElement;
         return mobId;
@@ -521,35 +506,24 @@ document.getElementById('wrapper').onclick = function (e) {
 
 
     if (xCoords === 0 && yCoords === 0) {
-        window.onclick = function (e) {
+        window.onclick = function(e) {
 
             mobId = e ? e.target : window.event.srcElement;
             if (mobId.id === String("mob" + Number(playerObj.pos[0] - 1) + Number(playerObj.pos[1]))) {
-                attack(mobId.id);
+                simulateKey(37)
 
             }
             if (mobId.id === String("mob" + Number(playerObj.pos[0] + 1) + Number(playerObj.pos[1]))) {
-                attack(mobId.id);
+                simulateKey(39)
             }
 
             if (mobId.id === String("mob" + Number(playerObj.pos[0]) + Number(playerObj.pos[1] + 1))) {
-                attack(mobId.id);
+                simulateKey(40)
             }
             if (mobId.id === String("mob" + Number(playerObj.pos[0]) + Number(playerObj.pos[1] - 1))) {
-                attack(mobId.id);
+                simulateKey(38)
             }
-            if (mobId.id === String("mob" + Number(playerObj.pos[0] - 1) + Number(playerObj.pos[1] - 1))) {
-                attack(mobId.id);
-            }
-            if (mobId.id === String("mob" + Number(playerObj.pos[0] + 1) + Number(playerObj.pos[1] + 1))) {
-                attack(mobId.id);
-            }
-            if (mobId.id === String("mob" + Number(playerObj.pos[0] + 1) + Number(playerObj.pos[1] - 1))) {
-                attack(mobId.id);
-            }
-            if (mobId.id === String("mob" + Number(playerObj.pos[0] - 1) + Number(playerObj.pos[1] + 1))) {
-                attack(mobId.id);
-            }
+
 
 
         }
@@ -559,46 +533,22 @@ document.getElementById('wrapper').onclick = function (e) {
     }
 
     if (xCoords > playerObj.pos[0] && xCoords < playerObj.pos[0] + 2 && yCoords == playerObj.pos[1]) {
-
-        playerObj.pos[0] = playerObj.pos[0] + 1;
-
-        char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
-        allMobsMovement()
-        // attack(mobId);
+        simulateKey(39)
 
     }
     if (xCoords < playerObj.pos[0] && xCoords > playerObj.pos[0] - 2 && yCoords == playerObj.pos[1]) {
-
-        playerObj.pos[0] = playerObj.pos[0] - 1;
-
-        char.style.marginLeft = (playerObj.pos[0] * visibleView) + pixelSizeVw;
-        allMobsMovement()
-        // attack(mobId);
+        simulateKey(37)
 
     }
     if (yCoords > playerObj.pos[1] && yCoords < playerObj.pos[1] + 2 && xCoords == playerObj.pos[0]) {
-
-        playerObj.pos[1] = playerObj.pos[1] + 1;
-
-        char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
-        allMobsMovement()
-        // attack(mobId);
+        simulateKey(40)
 
     }
     if (yCoords < playerObj.pos[1] && yCoords > playerObj.pos[1] - 2 && xCoords == playerObj.pos[0]) {
-
-        playerObj.pos[1] = playerObj.pos[1] - 1;
-        allMobsMovement()
-        char.style.marginTop = (playerObj.pos[1] * visibleView) + pixelSizeVw;
-
-        // attack(mobId);
+        simulateKey(38)
 
     }
 
     healthBarChange()
 
 };
-
-
-
-
