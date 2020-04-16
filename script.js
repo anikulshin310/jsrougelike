@@ -156,26 +156,26 @@ function createWalls() {
         walls.push([posX, posY]);
 
         function draw_c(id) {
-            let tree = randomInteger(1, 4);
-            if (tree == 1) {
-                treeX = 128;
-                treeY = 160;
 
-            }
-            if (tree == 2) {
-                treeX = 256;
-                treeY = 160;
 
+            switch (tree = randomInteger(1, 4)) {
+                case 1:
+                    treeX = 128;
+                    treeY = 160;
+                    break;
+                case 2:
+                    treeX = 256;
+                    treeY = 160;
+                    break;
+                case 3:
+                    treeX = 0;
+                    treeY = 160;
+                    break;
+                case 4:
+                    treeX = 384;
+                    treeY = 160;
+                    break;
             }
-            if (tree == 3) {
-                treeX = 0;
-                treeY = 160;
-            }
-            if (tree == 4) {
-                treeX = 384;
-                treeY = 160;
-            }
-
             let с_canvas = document.getElementById(id);
             let с_context = с_canvas.getContext("2d");
             с_context.drawImage(trees, treeX, treeY, 150, 165, 0, 0, 66 * 5, 66 * 3);
@@ -183,10 +183,7 @@ function createWalls() {
         }
         draw_c(wall.id)
 
-
     }
-
-
 
 }
 
@@ -196,7 +193,6 @@ function checkCells() {
     occupiedCells.push(freeCells.splice(randIndex, 1));
     posX = rand[0];
     posY = rand[1];
-
 
 }
 
@@ -252,13 +248,11 @@ function createMobs() {
         };
 
         mobs.push(mob);
-
         n = document.createElement('canvas');
         n.id = mob.name;
         n.style.position = 'absolute';
         n.style.width = (visibleView) + pixelSizeVw;
         n.style.height = (visibleView) + pixelSizeVw;
-
         n.style.display = 'flex';
         n.style.zIndex = 99;
         n.style.marginLeft = (mob.pos[0] * visibleView) + pixelSizeVw;
@@ -490,9 +484,6 @@ document.getElementById('wrapper').onclick = function(e) {
     let cellSize = document.querySelector('#field').offsetWidth / 10;
     let xCoords = Math.ceil(x / cellSize - 1);
     let yCoords = Math.ceil(y / cellSize - 1);
-    console.log(cellSize)
-
-
 
 
     window.onclick = function(e) {
